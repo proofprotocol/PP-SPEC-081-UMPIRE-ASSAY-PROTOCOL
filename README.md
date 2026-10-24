@@ -88,11 +88,13 @@ Draft, version 0.1.0, 2026-10-23. Maintained by Craig Thomas Ellrod as part of P
 
 Builds on PP-SPEC-077 (Dead Canary), PP-SPEC-078 (Jailed Canary), PP-SPEC-079 (Coal Mine), and PP-SPEC-080 (Pithead). Records are registered to a [PP-SPEC-004](https://github.com/proofprotocol/registry-api-spec) registry; the public instance is [proofregister.com](https://proofregister.com).
 
-Related: Proof Economy Prior Art Declaration, DOI [10.5281/zenodo.21379780](https://doi.org/10.5281/zenodo.21379780), Category 4a, Reproducibility requirement.
+Archived on Zenodo: v0.1.0, DOI [10.5281/zenodo.23607722](https://doi.org/10.5281/zenodo.23607722). All versions: [10.5281/zenodo.23607721](https://doi.org/10.5281/zenodo.23607721).
+
+Related: Proof Economy Prior Art Declaration, DOI [10.5281/zenodo.21379780](https://doi.org/10.5281/zenodo.21379780), Category 4a, Reproducibility requirement. PP-SPEC-077, ProofSwarm: The Dead Canary Protocol, DOI [10.5281/zenodo.23285060](https://doi.org/10.5281/zenodo.23285060).
 
 ## Cite
 
 ```
 Ellrod, C. (2026). Reproof: The Umpire Assay Protocol (PP-SPEC-081), v0.1.0.
-Craig Thomas Ellrod, Proof Protocol.
+Craig Thomas Ellrod, Proof Protocol. https://doi.org/10.5281/zenodo.23607722
 ```
