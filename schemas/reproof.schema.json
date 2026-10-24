@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/proofprotocol/PP-SPEC-081-UMPIRE-ASSAY-PROTOCOL/schemas/reproof.schema.json",
+  "title": "Reproof records (PP-SPEC-081)",
+  "description": "Reproof Manifest, Comparison Record, Umpire Draw, and Umpire Record under PP-SPEC-081 Section 12. Every record is a PP-SPEC-077 Section 21 record; Record IDs are SHA-256(\"UAP-1:record\" || RFC 8785 canonical form) with signatures, endorsements, proofregister_uri, and registry_receipt excluded.",
+  "oneOf": [
+    { "$ref": "#/$defs/reproof_manifest" },
+    { "$ref": "#/$defs/comparison_record" },
+    { "$ref": "#/$defs/umpire_draw" },
+    { "$ref": "#/$defs/umpire_record" }
+  ],
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "record_id": { "$ref": "#/$defs/hash" },
+    "pulse": {
+      "type": "object",
+      "required": ["source", "index", "output"],
+      "properties": {
+        "source": { "type": "string", "format": "uri" },
+        "index": { "type": "integer", "minimum": 0 },
+        "output": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "party": {
+      "type": "object",
+      "required": ["id", "seams", "disclosed_interests", "affiliates"],
+      "properties": {
+        "id": { "type": "string", "description": "Stable identifier of the party" },
+        "key": { "type": "string" },
+        "seams": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^(IP-([1-9]|10)|IP-R[1-4]|x-[a-z0-9-]+)$" }
+        },
+        "disclosed_interests": { "type": "array", "items": { "type": "string" } },
+        "affiliates": { "type": "array", "items": { "type": "string" }, "description": "Section 2 Affiliates within the Affiliation Window; empty array means none declared" }
+      },
+      "additionalProperties": false
+    },
+    "envelope": {
+      "type": "object",
+      "properties": {
+        "holder": { "type": "object", "required": ["id", "key"], "properties": { "id": { "type": "string" }, "key": { "type": "string" } } },
+        "disclosure": { "enum": ["public", "holder_only", "embargoed", "sealed"] },
+        "proofregister_uri": { "type": "string", "format": "uri" },
+        "registry_receipt": { "$ref": "#/$defs/hash" },
+        "signatures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["role", "key", "sig"],
+            "properties": {
+              "role": { "enum": ["commissioner", "comparator", "issuer", "witness", "umpire_selector", "holder", "registry", "endorser"] },
+              "key": { "type": "string" },
+              "sig": { "type": "string", "pattern": "^[0-9a-f]+$" }
+            }
+          }
+        },
+        "extensions": { "type": "object" }
+      }
+    },
+    "limit": {
+      "type": "object",
+      "required": ["metric", "absolute", "test", "alpha", "min_units"],
+      "properties": {
+        "metric": { "enum": ["stopped_rate", "false_block_rate", "claim_findings", "blind_share", "void_share", "booking_rate", "verdict_distribution"] },
+        "absolute": { "type": "number", "minimum": 0, "maximum": 1 },
+        "test": { "type": "string", "description": "Named, fully parameterized method, e.g. exact_two_proportion_two_sided, or an x- extension with a pointer to its definition" },
+        "alpha": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+        "min_units": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "reproof_manifest": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "type": "object",
+      "required": ["kind", "spec", "head", "scope", "commissioner", "funding", "party_set", "affiliation_window_months", "strata", "limits", "composition_tolerance", "reproof_window", "umpire_rule", "told_of_window", "publication_commitment", "anchor"],
+      "properties": {
+        "kind": { "const": "reproof_manifest" },
+        "spec": { "const": "PP-SPEC-081" },
+        "spec_version": { "type": "string" },
+        "head": {
+          "type": "object",
+          "required": ["record_ids", "receipts"],
+          "properties": {
+            "record_ids": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/record_id" }, "description": "Original Record IDs, or one Bundle Record ID" },
+            "receipts": { "type": "array", "items": { "$ref": "#/$defs/hash" } },
+            "source_spec": { "enum": ["PP-SPEC-077", "PP-SPEC-078", "PP-SPEC-079"] },
+            "dut_fingerprint": { "$ref": "#/$defs/hash" },
+            "sut_fingerprint": { "$ref": "#/$defs/hash" },
+            "comparability_class": { "type": "string" }
+          }
+        },
+        "scope": { "enum": ["instance", "class"] },
+        "parity_declaration": { "$ref": "#/$defs/hash", "description": "Required when scope is class" },
+        "commissioner": { "$ref": "#/$defs/party" },
+        "funding": {
+          "type": "object",
+          "required": ["tier", "sponsor"],
+          "properties": {
+            "tier": { "enum": ["provider_funded", "implementor_funded", "pesa_governed", "other"] },
+            "sponsor": { "type": "string" }
+          }
+        },
+        "party_set": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/party" } },
+        "affiliation_window_months": { "type": "integer", "minimum": 12 },
+        "strata": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Comparison strata, default technique_class and target_level" },
+        "limits": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/limit" } },
+        "composition_tolerance": { "type": "object" },
+        "reproof_window": {
+          "type": "object",
+          "required": ["opens", "closes"],
+          "properties": { "opens": { "type": "string", "format": "date-time" }, "closes": { "type": "string", "format": "date-time" } }
+        },
+        "umpire_rule": {
+          "type": "object",
+          "required": ["pool", "draw_procedure", "request_window_days"],
+          "properties": {
+            "pool": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "draw_procedure": { "type": "string" },
+            "request_window_days": { "type": "integer", "minimum": 1 },
+            "cost_bearer": { "enum": ["commissioner", "not_upheld_party", "split", "other"] }
+          }
+        },
+        "told_of_window": { "type": "array", "items": { "type": "string" } },
+        "publication_commitment": { "const": true },
+        "anchor": { "$ref": "#/$defs/pulse" }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "required": ["stratum", "metric", "head", "check", "verdict"],
+      "properties": {
+        "stratum": { "type": "object", "description": "Stratum keys and values, e.g. {technique_class: T1059, target_level: DUT}" },
+        "metric": { "type": "string" },
+        "head": { "type": "object", "required": ["n", "value"], "properties": { "n": { "type": "integer", "minimum": 0 }, "value": {} } },
+        "check": { "type": "object", "required": ["n", "value"], "properties": { "n": { "type": "integer", "minimum": 0 }, "value": {} } },
+        "difference": { "type": "number" },
+        "p_value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "verdict": { "enum": ["agree", "diverge", "insufficient"] },
+        "direction": { "enum": ["head_overstated", "head_understated", "none"] },
+        "confirmed_claim_finding": { "type": "boolean" }
+      }
+    },
+    "comparison_record": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "type": "object",
+      "required": ["kind", "spec", "reproof_manifest", "assays", "verdict", "cell_counts", "cells", "coverage_intersection", "content_overlap_check"],
+      "properties": {
+        "kind": { "const": "comparison_record" },
+        "spec": { "const": "PP-SPEC-081" },
+        "reproof_manifest": { "$ref": "#/$defs/record_id" },
+        "assays": {
+          "type": "object",
+          "required": ["head", "check"],
+          "properties": {
+            "head": { "type": "array", "items": { "$ref": "#/$defs/record_id" } },
+            "check": { "type": "array", "items": { "$ref": "#/$defs/record_id" } }
+          }
+        },
+        "verdict": { "enum": ["agree", "diverge", "insufficient", "abandoned", "lapsed"] },
+        "reason": { "type": "string", "description": "Required for abandoned and lapsed" },
+        "cell_counts": {
+          "type": "object",
+          "required": ["agree", "diverge", "insufficient"],
+          "properties": {
+            "agree": { "type": "integer", "minimum": 0 },
+            "diverge": { "type": "integer", "minimum": 0 },
+            "insufficient": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "cells": { "type": "array", "items": { "$ref": "#/$defs/cell" } },
+        "coverage_intersection": { "type": "array", "items": { "type": "string" } },
+        "content_overlap_check": {
+          "type": "object",
+          "required": ["made"],
+          "properties": {
+            "made": { "type": "boolean" },
+            "by": { "type": "string" },
+            "date": { "type": "string", "format": "date" },
+            "overlap_found": { "type": "boolean" }
+          }
+        },
+        "comparator": { "$ref": "#/$defs/party" }
+      }
+    },
+    "umpire_draw": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "type": "object",
+      "required": ["kind", "spec", "divergence", "pulse", "pool", "skipped", "drawn"],
+      "properties": {
+        "kind": { "const": "umpire_draw" },
+        "spec": { "const": "PP-SPEC-081" },
+        "divergence": { "$ref": "#/$defs/record_id", "description": "The Comparison Record with verdict diverge" },
+        "pulse": { "$ref": "#/$defs/pulse" },
+        "pool": { "type": "array", "items": { "type": "string" } },
+        "skipped": {
+          "type": "array",
+          "items": { "type": "object", "required": ["id", "reason"], "properties": { "id": { "type": "string" }, "reason": { "type": "string" } } }
+        },
+        "drawn": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/party" } }
+      }
+    },
+    "umpire_record": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "type": "object",
+      "required": ["kind", "spec", "divergence", "umpire_draw", "umpire_assay", "vs_head", "vs_check", "ruling"],
+      "properties": {
+        "kind": { "const": "umpire_record" },
+        "spec": { "const": "PP-SPEC-081" },
+        "divergence": { "$ref": "#/$defs/record_id" },
+        "umpire_draw": { "$ref": "#/$defs/record_id" },
+        "umpire_assay": { "type": "array", "items": { "$ref": "#/$defs/record_id" } },
+        "vs_head": { "enum": ["agree", "diverge", "insufficient"] },
+        "vs_check": { "enum": ["agree", "diverge", "insufficient"] },
+        "cells": { "type": "array", "items": { "$ref": "#/$defs/cell" } },
+        "ruling": { "enum": ["head_upheld", "check_upheld", "both_within_umpire", "disputed", "umpire_insufficient"] }
+      }
+    }
+  }
+}

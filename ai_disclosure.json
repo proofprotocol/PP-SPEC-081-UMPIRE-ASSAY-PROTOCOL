@@ -1,0 +1,59 @@
+{
+  "spec": "PP-SPEC-077:21.15",
+  "work": "PP-SPEC-081 Reproof: The Umpire Assay Protocol",
+  "work_version": "0.1.0",
+  "date": "2026-10-23",
+  "human_authors": [
+    {
+      "name": "Craig Thomas Ellrod",
+      "orcid": "0009-0004-1058-7666",
+      "role": "Author and inventor; originated reproof (independent re-execution of a proof) and directed the research that produced this specification; reproducibility requirement (Prior Art Declaration 4a); every normative decision, review and acceptance"
+    }
+  ],
+  "ai_systems": [
+    {
+      "provider": "Anthropic",
+      "model": "Claude (Opus 5.5)",
+      "role": "Research assistance at the author's direction: gap analysis of PP-SPEC-077 to 079, drafting, structuring, naming proposals, schema"
+    }
+  ],
+  "shares": {
+    "conception_and_normative_decisions": {
+      "human": 90,
+      "ai": 10,
+      "note": "The author originated reproof and asked whether Proof Protocol specified it; the AI's gap analysis answered that question at his direction. Procedural details the AI proposed are adopted only on the author's acceptance."
+    },
+    "design_and_naming": {
+      "human": 40,
+      "ai": 60,
+      "note": "Claude proposed: Umpire Assay Protocol name and mining terms (Head, Check, Umpire Assay, Split, Splitting Limit); Instance and Class Reproof; Cells and Insufficient; Reproof Status values; IP-R1 to IP-R4; UAP-1 tag"
+    },
+    "expression": {
+      "human": 0,
+      "ai": 100
+    },
+    "review_and_acceptance": {
+      "human": 100,
+      "ai": 0
+    }
+  },
+  "method": {
+    "kind": "self_estimated",
+    "notes": "Shares drafted by the AI from its record of what it proposed and what the author directed, for the author to confirm or correct before release. MAY be re-measured with a tool such as ProofJack.com."
+  },
+  "contributions": {
+    "human": [
+      "Originated reproof: an independent party re-proving a proof",
+      "Directed the research into whether PP-SPEC-077 to 080 specify it",
+      "Reproducibility requirement, Proof Economy Prior Art Declaration Category 4a (2026-07-10)",
+      "Assurance ladder and the rule that proof is built from independent evidence",
+      "Requirement that the repo stay private until he decides to publish",
+      "All review and acceptance"
+    ],
+    "ai": [
+      "Gap analysis at the author's direction: 077 to 079 define record verification but not reproof",
+      "Proposed procedure details, names, and the text of every section",
+      "schemas/reproof.schema.json and supporting documents"
+    ]
+  }
+}
