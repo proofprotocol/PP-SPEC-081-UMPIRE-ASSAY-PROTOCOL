@@ -8,7 +8,7 @@
 >
 > Any use, implementation, derivative, citation, or incorporation of this specification, in whole or in part, MUST attribute **Craig Thomas Ellrod and Proof Protocol**. This requirement applies to standards bodies, working groups, consortia, and commercial implementations.
 >
-> This specification is licensed under the Proof Protocol License 1.0 (see LICENSE.md); text Apache License 2.0 under Part A. Original inventor: Craig Thomas Ellrod (ORCID 0009-0004-1058-7666).
+> This specification is licensed under the Proof Protocol License 1.1 (see LICENSE.md); text CC BY 4.0 under Part A, which grants no patent rights. Original inventor: Craig Thomas Ellrod (ORCID 0009-0004-1058-7666).
 >
 > **Patents.** Patent terms are in [PATENT-SCHEDULE.md](PATENT-SCHEDULE.md). Claims not listed there are reserved by Craig Thomas Ellrod. Licensing: 1proofprotocol@gmail.com.
 >
@@ -21,7 +21,7 @@
 | Date | 2026-10-23 |
 | Status | Draft for public record |
 | Maintainer | Craig Thomas Ellrod (Proof Protocol) |
-| Builds on | PP-SPEC-077 v0.8.0 (Dead Canary), PP-SPEC-078 (Jailed Canary), PP-SPEC-079 v0.1.3 (Coal Mine), PP-SPEC-080 (Pithead Safety and Acceptance), PP-SPEC-004 (ProofRegister API) |
+| Builds on | PP-SPEC-077 v0.8.2 (Dead Canary), PP-SPEC-078 v0.2.4 (Jailed Canary), PP-SPEC-079 v0.1.4 (Coal Mine), PP-SPEC-080 v0.1.2 (Pithead Safety and Acceptance), PP-SPEC-004 (ProofRegister API) |
 
 ---
 
@@ -116,6 +116,8 @@ Terms defined in PP-SPEC-077 Section 2 and PP-SPEC-079 Section 2 have the same m
 
 3.3. Record verification is a precondition of reproof. A Head Assay whose records fail verification MUST NOT be the subject of a Check Assay; it is not proof, and there is nothing to reproduce.
 
+3.3a. So is the reproducibility duty of the Head Assay's own specification (077 11.7, 078 17.7a). A run that did not publish what a Check Assay needs cannot be reproven, and is a demonstration, not proof.
+
 3.4. Only Conformant records (077 21.13) can be reproven. A claim, report, attestation, or log produced outside PP-SPEC-077, PP-SPEC-078, or PP-SPEC-079, under any framework, is verification evidence (077 Section 3). It MAY be proven by a new run under those specifications. It cannot be reproven, because there is no committed Head Assay to reproduce.
 
 ## 4. Roles and Independence
@@ -146,7 +148,7 @@ A Check Assay reproduces the outcome, not the canaries. What is held constant is
 
 5.2. **Same environment.** For an Instance Reproof, the SUT Fingerprint (077 15.2.5) MUST equal the Head Assay's, captured independently. For a Class Reproof, the Check Assay MUST be in the same Comparability Class (079 9.5) under a Parity Declaration (079 5.3) registered before the Check Assay commits. The Reproof Manifest MUST state which, and every resulting status carries the scope (Section 9).
 
-5.3. **Same shape of test.** The Check Assay MUST use the Head Assay's Mine Plan composition (079 7.2), or, for a PP-SPEC-077 run outside an Engagement, the same technique catalog identifiers, color ratio, target levels, and Effect Point types as the Head Assay's public reveal (077 9.4.1), within composition tolerances declared in the Reproof Manifest.
+5.3. **Same shape of test.** The Check Assay MUST use the Head Assay's Mine Plan composition (079 7.2), or, for a PP-SPEC-077 run outside an Engagement, the Head Assay's Composition Manifest (077 9.8; for PP-SPEC-078, 078 17.7a), within composition tolerances declared in the Reproof Manifest.
 
 5.4. **Same claims.** Where the Head Assay included Gold canaries (077 5.6.4) against a Claim Sheet (079 8.1), the Check Assay MUST test the same claims.
 
@@ -174,7 +176,7 @@ A Check Assay reproduces the outcome, not the canaries. What is held constant is
 
 6.2. **Limits before results.** The Splitting Limit and comparison method are fixed by the Reproof Manifest. They MUST NOT be changed after the Check Assay's commitment. A Commissioner that wishes to compare under different limits MUST commission a new Check Assay under a new manifest.
 
-6.3. **Issuer blindness to the Head Assay's content.** The Check Assay's Issuer MAY use the Head Assay's public reveal (077 9.4.1) to match composition (5.3). It MUST commit its Proof Swarm root before it receives any of the Head Assay's content released at `holder_only` (077 9.4), if it receives that content at all.
+6.3. **Issuer blindness to the Head Assay's content.** The Check Assay's Issuer MAY use the Head Assay's public reveal (077 9.4.1) and Composition Manifest (077 9.8) to match composition (5.3). It MUST commit its Proof Swarm root before it receives any of the Head Assay's content released at `holder_only` (077 9.4), if it receives that content at all.
 
 6.4. **Adjudication before comparison.** The Check Assay MUST be adjudicated (077 Section 11) and its records registered before any comparison is computed. The Check Assay's Adjudicator (IP-8) MUST NOT receive the Head Assay's outcomes as an input. Comparison is a separate step (Section 7).
 

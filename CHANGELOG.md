@@ -12,3 +12,4 @@
 - Section 10: mandatory publication including abandoned and lapsed checks; no status without history.
 - Sections 11 to 13: application to 077, 078, 079; records under 077 Section 21 with the `UAP-1:record` tag; IP-R1 to IP-R4.
 - schemas/reproof.schema.json.
+- Licensed under the Proof Protocol License 1.1: specification text CC BY 4.0 from this first release; patents only under LICENSE.md Part A2 and PATENT-SCHEDULE.md.

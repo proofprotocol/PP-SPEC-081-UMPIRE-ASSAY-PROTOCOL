@@ -6,7 +6,7 @@
 >
 > Any use, implementation, derivative, citation, or incorporation of this work, in whole or in part, MUST attribute **Craig Thomas Ellrod and Proof Protocol**. See [NOTICE.md](NOTICE.md).
 >
-> Licensed under the Proof Protocol License 1.0 (see LICENSE.md); text Apache License 2.0 under Part A. Original inventor: Craig Thomas Ellrod (ORCID 0009-0004-1058-7666).
+> Licensed under the Proof Protocol License 1.1 (see LICENSE.md); text CC BY 4.0 under Part A, which grants no patent rights. Original inventor: Craig Thomas Ellrod (ORCID 0009-0004-1058-7666).
 >
 > **Patents.** Patent terms are in [PATENT-SCHEDULE.md](PATENT-SCHEDULE.md). Claims not listed there are reserved by Craig Thomas Ellrod. Licensing: 1proofprotocol@gmail.com.
 
@@ -80,6 +80,7 @@ Anyone can verify a Proof Protocol record: recompute the root, check the signatu
 | [SECURITY.md](SECURITY.md) | Reporting protocol flaws |
 | [PATENT-SCHEDULE.md](PATENT-SCHEDULE.md) | Patent terms |
 | [LICENSE.md](LICENSE.md) | License terms |
+| [LICENSE-CC-BY-4.0.md](LICENSE-CC-BY-4.0.md) | CC BY 4.0, specification text |
 
 ## Status
 
